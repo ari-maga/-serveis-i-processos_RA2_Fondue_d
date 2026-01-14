@@ -29,6 +29,7 @@ public class App {
 		Thread[] thPersones = new Thread[numAmics];
 		GestorForquilles gfFoundieCarn = new GestorForquilles(numForquillesCarn);
 		GestorForquilles gfFoundieFormatge = new GestorForquilles(numForquillesFormatge);
+		int numTipusFoundie;//carn = 0, formatge = 1, ambdues = 2
 		
 		
 		/* Aquí em dedico a crear les persones i els threads, he de crear numAmics persones i també a cada persona li assigno aleatoriament una foundie,
@@ -39,15 +40,20 @@ public class App {
 			//Genera un nombre aleatori entre 4 i 7 que son els segons que tarda la persona en fer la carn
 			tempsCarnPersona = (int) Math.round(4 + Math.random() * 3);
 			//Genero aleatoriament un nombre 0 o 1 per decidir a quina foundie va
-			if((int) Math.round( Math.random() * 1)==0) {
+			numTipusFoundie = (int) Math.round( Math.random() * 2);
+			if(numTipusFoundie==0) {
 				//va a la fondie de carn
 				System.out.println("Persona "+String.valueOf(i+1)+" va a la fondie de carn");
 				persones[i] = new Persona(tempsCarnPersona, gfFoundieCarn, i + 1,"carn");
-			}else {
+			}else if (numTipusFoundie ==1){
 				// va a la fondie de formatge
 				System.out.println("Persona "+String.valueOf(i+1)+" va a la fondie de formatge");
-				//Assumeixo que el temps de fer el formatge són 2 segons que és sucar i treure
 				persones[i] = new Persona(tempsCarnPersona, gfFoundieFormatge, i + 1,"formatge");
+			}else if (numTipusFoundie ==2){
+				// va a les dos foundies
+				System.out.println("Persona "+String.valueOf(i+1)+" va a les dos fondies");
+				//He sobrecarregat el constructor per incloure els dos gestors de forquilles i que també posa automaticament el tipus de foundie perque no hi ha cap altra opcio.
+				persones[i] = new Persona(tempsCarnPersona,gfFoundieCarn, gfFoundieFormatge, i + 1);
 			}
 			//Poso la persona a l'array de threads i l'inicio.
 			thPersones[i] = new Thread(persones[i]);
